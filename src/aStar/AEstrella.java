@@ -1,9 +1,9 @@
 package aStar;
 
+import heuristica.InterfazHeuristica;
+
 import java.util.ArrayList;
 import java.util.Collections;
-
-import heuristica.InterfazHeuristica;
 
 
 public class AEstrella {
@@ -85,16 +85,16 @@ public class AEstrella {
         
         public void PintarCamino() {
                 Nodo nodo;
-                for(int x=0; x<map.getMapWith(); x++) {
+                for(int x=0; x<map.getAnchuraMapaLogico(); x++) {
 
                         if (x==0) {
-                                for (int i=0; i<=map.getMapWith(); i++)
+                                for (int i=0; i<=map.getAnchuraMapaLogico(); i++)
                                         System.out.print("-");
                                 System.out.println();   
                         }
                         System.out.print("|");
 
-                        for(int y=0; y<map.getMapHeight(); y++) {
+                        for(int y=0; y<map.getAlturaMapaLogico(); y++) {
                                 nodo = map.getNodo(x, y);
                                 if (nodo.isObstacle()) {
                                         System.out.print("O");
@@ -107,14 +107,14 @@ public class AEstrella {
                                 } else {
                                         System.out.print(" ");
                                 }
-                                if (y==map.getMapHeight())
+                                if (y==map.getAlturaMapaLogico())
                                         System.out.print("_");
                         }
 
                         System.out.print("|");
                         System.out.println();
                 }
-                for (int i=0; i<=map.getMapWith(); i++)
+                for (int i=0; i<=map.getAnchuraMapaLogico(); i++)
                         System.out.print("-");
         }
 

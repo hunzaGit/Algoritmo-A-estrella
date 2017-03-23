@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 import javax.swing.SwingUtilities;
 
-import vista.MainWindow;
+import vista.VentanaPrincipal;
 import cronometro.Cronometro;
 
-public class Principal {
+public class Main {
 
 	private static int anchuraMapa;
 	private static int alturaMapa;
@@ -131,28 +131,28 @@ public class Principal {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(
+			java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(
+			java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(
+			java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(
+			java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(
 					java.util.logging.Level.SEVERE, null, ex);
 		}
 		// </editor-fold>
 	
 
-		Principal p = new Principal();
-		Cronometro s = new Cronometro();
+		Main p = new Main();
+		//Cronometro s = new Cronometro();
 		// p.pedirDatos();
 		p.insertarObstaculos();
 
 		// Ponemos en marcha el cronómetro.
-		s.start();
+		//s.start();
 
 		// Inicializamos el mapa.
 		// Mapa map = new Mapa(anchuraMapa, alturaMapa, obstacleMap);
@@ -167,7 +167,7 @@ public class Principal {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new MainWindow().arranca();
+				new VentanaPrincipal(15, 10).pintarse();
 			}
 		});
 		

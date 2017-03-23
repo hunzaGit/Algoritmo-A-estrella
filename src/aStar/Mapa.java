@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Mapa {
 
-        private int anchuraMapa;
-        private int alturaMapa;
+        public int anchuraMapa;
+        public int alturaMapa;
         private ArrayList<ArrayList<Nodo>> mapa;
         private int localizacionInicialX = 0;
         private int localizacionInicialY = 0;
@@ -123,10 +123,10 @@ public class Mapa {
                 }
         }
         
-        public int getMapWith() {
+        public int getAnchuraMapaLogico() {
                 return anchuraMapa;
         }
-        public int getMapHeight() {
+        public int getAlturaMapaLogico() {
                 return alturaMapa;
         }
         public void clear() {

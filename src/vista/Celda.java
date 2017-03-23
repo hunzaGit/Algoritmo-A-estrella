@@ -2,10 +2,10 @@ package vista;
 
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
-//ESTO ESTA DENTRO DE CITYMAPPANEL
-public class PlaceCell extends JButton{
+//ESTO ESTA DENTRO DE TableroCeldas
+public class Celda extends JButton{
 
 	/**
 	 * 
@@ -14,8 +14,9 @@ public class PlaceCell extends JButton{
 	private int fila;
 	private int columna;
 	
-	public PlaceCell(){
+	public Celda(){
 
+		this.setFocusable(false);
 	}
 
 public void setColorNormal(){
@@ -50,6 +51,8 @@ public void setFila(int fila) {
 
 public void setColorFinal() {
 	// TODO Auto-generated method stub
+	//ImageIcon imgMeta= new ImageIcon(this.getClass().getResource("/images/meta.png"));
+	//this.setIcon(imgMeta);
 	this.setBackground(Color.green);
 }
 

@@ -5,38 +5,44 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.EventListener;
 
-import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 
 // ESTA CLASE ESTA DENTRO DE MAIN WINDOW Y CONTIENE EL PANEL CE CELDAS Y LA IMAGEN DE WALLE 
-public class CityMapPanel extends JPanel{
+public class TableroCeldas extends JPanel{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private PlaceCell[][] panel; //private matriz de JPlacecells...
+	private Celda[][] panel; //private matriz de JPlacecells...
+	private int altura = 10;
+	private int anchura = 15;
 	
-	public CityMapPanel(){
+	public TableroCeldas(int anchura, int altura){
+		this.anchura = anchura;
+		this.altura = altura;
 		inicializarPanel();
 	}
 
 	private void inicializarPanel() {
 		// TODO Auto-generated method stub
-		this.setBorder(new TitledBorder("Mapa(20x20)"));
-		this.setName("Mapa");
+		
+		this.setBorder(BorderFactory.createTitledBorder(""));
+		this.setName("Tablero");
 
-		panel= new PlaceCell[20][20];
-		this.setLayout(new GridLayout(21, 21)); //ordenacion de celdas 20x20
+		
+		panel= new Celda[anchura][altura];
+		this.setLayout(new GridLayout(anchura, altura)); //ordenacion de celdas alto x ancho
 		//INICIALIZACION DE LA TABLA.
-		for( int i=0; i< 20;i++){
-			for (int j=0; j< 20;j++){
-				this.panel[i][j] = new PlaceCell(); 
-				this.add(panel[i][j]);
-				this.panel[i][j].setColorNormal();
-				this.panel[i][j].setToolTipText(Integer.toString(i) + " , " + Integer.toString(j));
+		for( int x=0; x< anchura;x++){
+			for (int y=0; y< altura;y++){
+				this.panel[x][y] = new Celda(); 
+				this.add(panel[x][y]);
+				this.panel[x][y].setColorNormal();
+				this.panel[x][y].setToolTipText(Integer.toString(x) + " , " + Integer.toString(y));
 			}
 		}
 
@@ -44,12 +50,12 @@ public class CityMapPanel extends JPanel{
 	
 	//Inicializa los escuchadores de los botones de la matriz
 	public void inicializarEscuchadores(EventListener e){
-		for(int i=0;i<20;i++){
-			for(int j=0; j<20;j++){
-				this.panel[i][j].addActionListener((ActionListener) e);
-				this.panel[i][j].setName("Map");
-				this.panel[i][j].setFila(i);
-				this.panel[i][j].setColumna(j);
+		for(int x=0;x<anchura;x++){
+			for(int y=0; y<altura;y++){
+				this.panel[x][y].addActionListener((ActionListener) e);
+				this.panel[x][y].setName("Map");
+				this.panel[x][y].setFila(x);
+				this.panel[x][y].setColumna(y);
 			}
 		}
 	}
@@ -67,8 +73,8 @@ public class CityMapPanel extends JPanel{
 
 	public void inicializarComienzoFin(int xIni, int yIni, int xFin, int yFin) {
 		// TODO Auto-generated method stub
-		this.panel[xIni][yIni].setColorMeta();
-		this.panel[xFin][yFin].setColorMeta();
+//		this.panel[xIni][yIni].setColorMeta();
+//		this.panel[xFin][yFin].setColorMeta();
 		/*
 		if(!this.lugarActual.equals(lugar)){
 			this.panel[x][y].setName("Gris");
@@ -96,4 +102,38 @@ public class CityMapPanel extends JPanel{
 		// TODO Auto-generated method stub
 		this.panel[xFinal][yFinal].setColorFinal();
 	}
+
+	/**
+	 * @return the altura
+	 */
+	public int getAltura() {
+		return altura;
+	}
+
+	/**
+	 * @param altura the altura to set
+	 */
+	public void setAltura(int altura) {
+		this.altura = altura;
+	}
+
+	/**
+	 * @return the anchura
+	 */
+	public int getAnchura() {
+		return anchura;
+	}
+
+	/**
+	 * @param anchura the anchura to set
+	 */
+	public void setAnchura(int anchura) {
+		this.anchura = anchura;
+	}
+	
+	
+	public Celda getCelda(int x, int y) {
+		return panel[x][y];
+	}
+	
 }
