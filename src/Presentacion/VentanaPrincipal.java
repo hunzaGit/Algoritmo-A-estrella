@@ -230,6 +230,11 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 		textFieldIniX.requestFocus();
 	}
 
+	
+	/** Metodo que pinta el camino de celdas que ha resuleto Negocio
+	 * 
+	 * @param caminoMasCorto el camino más corto
+	 */
 	protected void pintarCaminoCeldas(final Camino caminoMasCorto) {
 		new Thread(new Runnable() {
 
@@ -319,6 +324,12 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 		obstacleMap[fuente.getFila()][fuente.getColumna()] = 1;
 	}
 
+	
+	/** Action Listener común para lso elementos de la ventana
+	 * 
+	 * @author Rodrigo de Miguel
+	 *
+	 */
 	public class ALElementosVentana implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
@@ -404,6 +415,11 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 		}
 	}
 
+	/** Key Listener común para lso elementos de la ventana
+	 * 
+	 * @author Rodrigo de Miguel
+	 *
+	 */
 	public class KLElementosVentana implements KeyListener {
 
 		public void keyPressed(KeyEvent arg0) {
@@ -438,6 +454,12 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 
 	}
 
+	
+	/** Focus Listener común para lso elementos de la ventana
+	 * 
+	 * @author Rodrigo de Miguel
+	 *
+	 */
 	public class FLElementosVentana implements FocusListener {
 
 		public void focusGained(FocusEvent arg0) {
