@@ -1,8 +1,7 @@
-package vista;
+package Presentacion;
 
 import java.awt.Color;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 //ESTO ESTA DENTRO DE TableroCeldas
 public class Celda extends JButton{

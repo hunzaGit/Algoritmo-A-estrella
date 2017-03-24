@@ -1,4 +1,4 @@
-package heuristica;
+package Negocio.heuristica;
 
 public interface InterfazHeuristica {
 

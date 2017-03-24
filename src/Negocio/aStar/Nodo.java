@@ -1,4 +1,4 @@
-package aStar;
+package Negocio.aStar;
 
 import java.util.ArrayList;
 

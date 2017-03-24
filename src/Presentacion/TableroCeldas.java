@@ -1,4 +1,4 @@
-package vista;
+package Presentacion;
 
 
 import java.awt.GridLayout;
@@ -7,7 +7,6 @@ import java.util.EventListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
 
 
 // ESTA CLASE ESTA DENTRO DE MAIN WINDOW Y CONTIENE EL PANEL CE CELDAS Y LA IMAGEN DE WALLE 

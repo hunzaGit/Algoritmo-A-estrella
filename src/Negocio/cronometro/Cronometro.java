@@ -1,4 +1,4 @@
-package cronometro;
+package Negocio.cronometro;
 
 public class Cronometro {
 
@@ -27,7 +27,10 @@ public class Cronometro {
         }
 
 
-        // tiempo transcurrido en milisegundos
+        /**
+         * 
+         * @returnTiempo transcurrido en milisegundos
+         */
         public long getElapsedTime() {
                 long tiempoTranscurrido;
                 if (enMarcha) {
@@ -38,10 +41,11 @@ public class Cronometro {
                 }
                 return tiempoTranscurrido;
         }
-
-//////////////// quitamos el metodo!!!
         
-        // tiempo transcurrido en segundos
+        /**
+         * 
+         * @return tiempo transcurrido en segundos
+         */
         public long getElapsedTimeSecs() {
                 long tiempoTranscurrido;
                 if (enMarcha) {

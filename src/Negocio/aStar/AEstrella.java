@@ -1,9 +1,9 @@
-package aStar;
-
-import heuristica.InterfazHeuristica;
+package Negocio.aStar;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import Negocio.heuristica.InterfazHeuristica;
 
 
 public class AEstrella {

@@ -1,4 +1,4 @@
-package aStar;
+package Negocio.aStar;
 
 import java.util.ArrayList;
 
@@ -37,20 +37,20 @@ public class Mapa {
 
 
         private void establecerBordesMapa() {
-                for ( int x = 0; x < anchuraMapa-1; x++ ) {
-                        for ( int y = 0; y < alturaMapa-1; y++ ) {
+                for ( int x = 0; x < anchuraMapa; x++ ) {
+                        for ( int y = 0; y < alturaMapa; y++ ) {
                                 Nodo node = mapa.get(x).get(y);
                                 if (!(y==0))
                                         node.setNorth(mapa.get(x).get(y-1));
-                                if (!(y==0) && !(x==anchuraMapa))
+                                if (!(y==0) && !(x==anchuraMapa-1))
                                         node.setNorthEast(mapa.get(x+1).get(y-1));
-                                if (!(x==anchuraMapa))
+                                if (!(x==anchuraMapa-1))
                                         node.setEast(mapa.get(x+1).get(y));
-                                if (!(x==anchuraMapa) && !(y==alturaMapa))
+                                if (!(x==anchuraMapa-1) && !(y==alturaMapa-1))
                                         node.setSouthEast(mapa.get(x+1).get(y+1));
-                                if (!(y==alturaMapa))
+                                if (!(y==alturaMapa-1))
                                         node.setSouth(mapa.get(x).get(y+1));
-                                if (!(x==0) && !(y==alturaMapa))
+                                if (!(x==0) && !(y==alturaMapa-1))
                                         node.setSouthWest(mapa.get(x-1).get(y+1));
                                 if (!(x==0))
                                         node.setWest(mapa.get(x-1).get(y));
