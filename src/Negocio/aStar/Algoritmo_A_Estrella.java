@@ -6,7 +6,7 @@ import java.util.Collections;
 import Negocio.heuristica.InterfazHeuristica;
 
 
-public class AEstrella {
+public class Algoritmo_A_Estrella {
         private Mapa map;
         private InterfazHeuristica heuristic;
       
@@ -14,7 +14,7 @@ public class AEstrella {
         private ListaNodosOrdenadas listaAbierta;
         private Camino caminoMasCorto;
 
-        public AEstrella(Mapa map, InterfazHeuristica heuristic) {
+        public Algoritmo_A_Estrella(Mapa map, InterfazHeuristica heuristic) {
                 this.map = map;
                 this.heuristic = heuristic;
 

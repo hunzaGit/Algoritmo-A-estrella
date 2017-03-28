@@ -21,8 +21,8 @@ public class Celda extends JButton{
 public void setColorNormal(){
 	this.setBackground(Color.GRAY);
 }
-public void setColorMeta(){
-	this.setBackground(Color.YELLOW);
+public void setColorInicio(){
+	this.setBackground(Color.GREEN);
 }
 public void setColorCamino(){
 	setBackground(Color.DARK_GRAY);
@@ -52,7 +52,7 @@ public void setColorFinal() {
 	// TODO Auto-generated method stub
 	//ImageIcon imgMeta= new ImageIcon(this.getClass().getResource("/images/meta.png"));
 	//this.setIcon(imgMeta);
-	this.setBackground(Color.green);
+	this.setBackground(Color.BLUE);
 }
 
 }

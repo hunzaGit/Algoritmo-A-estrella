@@ -93,6 +93,10 @@ public class TableroCeldas extends JPanel{
 		this.panel[x][y].setColorCamino();
 	}
 	
+	public void pintarCeldaNormal(int x, int y){		
+		this.panel[x][y].setColorNormal();
+	}
+	
 	public void pintarObstaculo(int x, int y){		
 		this.panel[x][y].setColorObstaculo();
 	}

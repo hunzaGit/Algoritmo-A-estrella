@@ -14,7 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import Negocio.aStar.AEstrella;
+import Negocio.aStar.Algoritmo_A_Estrella;
 import Negocio.aStar.Camino;
 import Negocio.aStar.Mapa;
 import Negocio.aStar.Nodo;
@@ -58,7 +58,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 	private TableroCeldas tableroCeldas;
 	private Mapa mapaLogico;
 	InterfazHeuristica interfazHeuristic;
-	AEstrella pathFinder;
+	Algoritmo_A_Estrella pathFinder;
 	int[][] obstacleMap;
 	Nodo nodo;
 
@@ -75,7 +75,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 	/**
 	 * Creates new form Principal
 	 */
-	public VentanaPrincipal(Mapa map, InterfazHeuristica h, AEstrella pathFinder) {
+	public VentanaPrincipal(Mapa map, InterfazHeuristica h, Algoritmo_A_Estrella pathFinder) {
 		tableroCeldas = new TableroCeldas(this.anchuraTablero,
 				this.alturaTablero);
 		tableroCeldas.setAltura(alturaTablero);
@@ -261,8 +261,18 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 												nodo.getY());
 									}
 								} catch (InterruptedException e) {
+									JOptionPane.showMessageDialog(null,
+											"Hubo un error en el proceso");
 								}
 
+							}else{
+								
+								if(obstacleMap[nodo.getX()][nodo.getY()] != 1 &&
+								(mapaLogico.getLocalizacionInicialX() != nodo.getX() && mapaLogico.getLocalizacionInicialX() != nodo.getY()) &&
+								(mapaLogico.getLocalizacionFinalX() != nodo.getX() && mapaLogico.getLocalizacionFinalY() != nodo.getY())){
+									
+									tableroCeldas.pintarCeldaNormal(nodo.getX(), nodo.getY());
+								}
 							}
 						}
 
@@ -368,7 +378,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 						// Inicializamos la heurística.
 						interfazHeuristic = new CalcularDistanciaLineaRecta();
 						// Inicializamos el algoritmo
-						pathFinder = new AEstrella(mapaLogico,
+						pathFinder = new Algoritmo_A_Estrella(mapaLogico,
 								interfazHeuristic);
 						// Calculamos el camino más corto.
 						pathFinder.calcularCaminoMasCorto(xInicio, yInicio,
@@ -428,7 +438,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 
 				if (jButtonComenzar.isFocusOwner()) {
 					jButtonComenzar.doClick();
-					jButtonReiniciar.requestFocus();
+					jButtonComenzar.requestFocus();
 				}
 
 				if (jButtonRedimensionar.isFocusOwner()) {
@@ -486,7 +496,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 								"Coor Y Inicio fuera de rango");
 					else {
 
-						tableroCeldas.getCelda(xInicio, yInicio).setColorMeta();
+						tableroCeldas.getCelda(xInicio, yInicio).setColorInicio();
 
 					}
 				} catch (NumberFormatException e1) {
