@@ -13,15 +13,13 @@ import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-import Negocio.aStar.Algoritmo_A_Estrella;
+import Negocio.Coordenadas;
+import Negocio.Transfer;
 import Negocio.aStar.Camino;
-import Negocio.aStar.Mapa;
-import Negocio.aStar.Nodo;
-import Negocio.cronometro.Cronometro;
-import Negocio.heuristica.CalcularDistanciaLineaRecta;
-import Negocio.heuristica.InterfazHeuristica;
-
+import Presentacion.Controlador.Controlador;
+import Presentacion.Controlador.EventoGUI;
 
 public class VentanaPrincipal extends javax.swing.JFrame implements
 		ActionListener {
@@ -51,16 +49,13 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 	private javax.swing.JTextField textFieldAnchuraTablero;
 	private javax.swing.JTextField textFieldAlturaTablero;
 
-	private int anchuraTablero = 15;
-	private int alturaTablero = 10;
+	private static int anchuraTablero = 15;
+	private static int alturaTablero = 10;
+	private Controlador controlador;
 
 	// End of variables declaration
 	private TableroCeldas tableroCeldas;
-	private Mapa mapaLogico;
-	InterfazHeuristica interfazHeuristic;
-	Algoritmo_A_Estrella pathFinder;
 	int[][] obstacleMap;
-	Nodo nodo;
 
 	// Paneles Intermedios
 	private JPanel panelInputsIni;
@@ -75,53 +70,45 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 	/**
 	 * Creates new form Principal
 	 */
-	public VentanaPrincipal(Mapa map, InterfazHeuristica h, Algoritmo_A_Estrella pathFinder) {
-		tableroCeldas = new TableroCeldas(this.anchuraTablero,
-				this.alturaTablero);
-		tableroCeldas.setAltura(alturaTablero);
-		tableroCeldas.setAnchura(anchuraTablero);
-		this.mapaLogico = map;
-		interfazHeuristic = h;
-		this.pathFinder = pathFinder;
+	public VentanaPrincipal() {
+		tableroCeldas = new TableroCeldas(VentanaPrincipal.anchuraTablero,
+				VentanaPrincipal.alturaTablero);
+
 		create();
 		agregarManejadoresDeEventos();
-		
+
 		textFieldIniX.requestFocus();
 		textFieldIniX.requestFocus(true);
-	
+
 	}
 
 	public VentanaPrincipal(int anchura, int altura) {
-		this.anchuraTablero = anchura;
-		this.alturaTablero = altura;
-		tableroCeldas = new TableroCeldas(this.anchuraTablero,
-				this.alturaTablero);
-		;
-		tableroCeldas.setAltura(alturaTablero);
-		tableroCeldas.setAnchura(anchuraTablero);
+		controlador = new Controlador(anchuraTablero, alturaTablero);
+		tableroCeldas = new TableroCeldas(VentanaPrincipal.anchuraTablero,
+				VentanaPrincipal.alturaTablero);
+
 		tableroCeldas.inicializarEscuchadores(this);
 		obstacleMap = new int[anchuraTablero + 1][alturaTablero + 1];
 		create();
 		agregarManejadoresDeEventos();
-		
 	}
 
 	private void agregarManejadoresDeEventos() {
 		ALElementosVentana oyenteAL = new ALElementosVentana();
 		KLElementosVentana oyenteKL = new KLElementosVentana();
 		FLElementosVentana oyenteFL = new FLElementosVentana();
-		
+
 		jButtonComenzar.addActionListener(oyenteAL);
 		jButtonRedimensionar.addActionListener(oyenteAL);
 		jButtonReiniciar.addActionListener(oyenteAL);
-		
+
 		jButtonComenzar.addKeyListener(oyenteKL);
 		jButtonRedimensionar.addKeyListener(oyenteKL);
 		jButtonReiniciar.addKeyListener(oyenteKL);
-		
+
 		textFieldIniY.addFocusListener(oyenteFL);
 		textFieldFinY.addFocusListener(oyenteFL);
-		
+
 	}
 
 	/**
@@ -206,10 +193,12 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 		panelTamInputs.add(textFieldAnchuraTablero);
 		panelTamInputs.add(textFieldAlturaTablero);
 		panelInputsTam.add(panelTamInputs);
-		
-		stringTamañoTiempoTablero = "Tablero[ "+ anchuraTablero + "x" + alturaTablero + " ]";
-		
-		panelInputsTam.setBorder(BorderFactory.createTitledBorder(stringTamañoTiempoTablero));
+
+		stringTamañoTiempoTablero = "Tablero[ " + anchuraTablero + "x"
+				+ alturaTablero + " ]";
+
+		panelInputsTam.setBorder(BorderFactory
+				.createTitledBorder(stringTamañoTiempoTablero));
 		panelInputsTam.add(jButtonRedimensionar, BorderLayout.SOUTH);
 
 		panelInputs.add(panelInputsIniFin);
@@ -221,7 +210,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 		this.add(tableroCeldas, BorderLayout.CENTER);
 		this.add(panelInputs, BorderLayout.SOUTH);
 
-		/////////////////////////////////////////////////////////////////////////////
+		// ///////////////////////////////////////////////////////////////////////////
 
 		setSize(1000, 700);
 		setLocationRelativeTo(this);
@@ -230,12 +219,14 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 		textFieldIniX.requestFocus();
 	}
 
-	
-	/** Metodo que pinta el camino de celdas que ha resuleto Negocio
+	/**
+	 * Metodo que pinta el camino de celdas que ha resuleto Negocio
 	 * 
-	 * @param caminoMasCorto el camino más corto
+	 * @param caminoMasCorto
+	 *            el camino más corto
 	 */
-	protected void pintarCaminoCeldas(final Camino caminoMasCorto) {
+	protected void pintarCaminoCeldas(final Camino caminoMasCorto,
+			final Coordenadas coord_Inicio, final Coordenadas coord_Fin) {
 		new Thread(new Runnable() {
 
 			public void run() {
@@ -243,43 +234,47 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 					JOptionPane.showMessageDialog(null,
 							"No existe un camino posible");
 					restaurarVentana();
-				} // no hay camino
-				else
-					for (int x = 0; x < mapaLogico.getAnchuraMapaLogico(); x++) {
+				} else {
+					for (int x = 0; x < anchuraTablero; x++) {
 
-						for (int y = 0; y < mapaLogico.getAlturaMapaLogico(); y++) {
-							nodo = mapaLogico.getNodo(x, y);
+						for (int y = 0; y < alturaTablero; y++) {
 
-							if (caminoMasCorto.contains(nodo.getX(),
-									nodo.getY())) {
+							if (caminoMasCorto.contains(x, y)) {
 								try {
 									// Retardo para pintar celdas
 									Thread.sleep(120);
 
-									if (x < mapaLogico.getAnchuraMapaLogico()) {
-										tableroCeldas.pintarCelda(nodo.getX(),
-												nodo.getY());
-									}
+									tableroCeldas.pintarCeldaCamino(x, y);
 								} catch (InterruptedException e) {
 									JOptionPane.showMessageDialog(null,
 											"Hubo un error en el proceso");
 								}
 
-							}else{
-								
-								if(obstacleMap[nodo.getX()][nodo.getY()] != 1 &&
-								(mapaLogico.getLocalizacionInicialX() != nodo.getX() && mapaLogico.getLocalizacionInicialX() != nodo.getY()) &&
-								(mapaLogico.getLocalizacionFinalX() != nodo.getX() && mapaLogico.getLocalizacionFinalY() != nodo.getY())){
-									
-									tableroCeldas.pintarCeldaNormal(nodo.getX(), nodo.getY());
+							} else {
+
+								if (obstacleMap[x][y] != 1) {
+
+									tableroCeldas.pintarCeldaNormal(x, y);
 								}
+
+								if (coord_Inicio.getCoord_x() == x
+										&& coord_Inicio.getCoord_Y() == y) {
+									tableroCeldas.pintarInicio(x, y);
+								}
+
+								if (coord_Fin.getCoord_x() == x
+										&& coord_Fin.getCoord_Y() == y) {
+									tableroCeldas.pintarInicio(x, y);
+								}
+
 							}
 						}
-
 					}
-				int xFinal = Integer.parseInt(textFieldFinX.getText());
-				int yFinal = Integer.parseInt(textFieldFinY.getText());
-				tableroCeldas.pintarFinal(xFinal, yFinal);
+
+					int xFinal = Integer.parseInt(textFieldFinX.getText());
+					int yFinal = Integer.parseInt(textFieldFinY.getText());
+					tableroCeldas.pintarFinal(xFinal, yFinal);
+				}
 			}
 
 		}).start();
@@ -334,11 +329,11 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 		obstacleMap[fuente.getFila()][fuente.getColumna()] = 1;
 	}
 
-	
-	/** Action Listener común para lso elementos de la ventana
+	/**
+	 * Action Listener común para lso elementos de la ventana
 	 * 
 	 * @author Rodrigo de Miguel
-	 *
+	 * 
 	 */
 	public class ALElementosVentana implements ActionListener {
 
@@ -367,32 +362,32 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 						JOptionPane.showMessageDialog(null,
 								"Coor Y Final fuera de rango");
 					else {
-						
-						Cronometro crono = new Cronometro();
-						crono.start();
-						tableroCeldas.inicializarComienzoFin(xInicio, yInicio,
-								xFinal, yFinal);
-						// Inicializamos el mapa.
-						mapaLogico = new Mapa(anchuraTablero, alturaTablero,
-								obstacleMap);
-						// Inicializamos la heurística.
-						interfazHeuristic = new CalcularDistanciaLineaRecta();
-						// Inicializamos el algoritmo
-						pathFinder = new Algoritmo_A_Estrella(mapaLogico,
-								interfazHeuristic);
-						// Calculamos el camino más corto.
-						pathFinder.calcularCaminoMasCorto(xInicio, yInicio,
-								xFinal, yFinal);
 
-						Camino caminoMasCorto = pathFinder.getCaminoMasCorto();
-						crono.stop();
+						Coordenadas coord_Inicio = new Coordenadas(xInicio,
+								yInicio);
+						Coordenadas coord_Fin = new Coordenadas(xFinal, yFinal);
+
+
+						Transfer miTransfer = new Transfer(coord_Inicio,
+								coord_Fin, obstacleMap);
+
+						// Se manda la peticion para calcular el camino más
+						// corto, dado un inicio, un fin y un conjunto de
+						// obstaculos.
+						Transfer costeTiempo = (Transfer) controlador.action(EventoGUI.CALCULAR_CAMINO_MAS_CORTO, miTransfer);
 						
+						Camino caminoMasCorto = (Camino) controlador.action( EventoGUI.GET_CAMINO_MAS_CORTO, null);
+
 						
-						
-						
-						panelInputsTam.setBorder(BorderFactory.createTitledBorder(stringTamañoTiempoTablero.concat(" - " +crono.getElapsedTime() + " ms")));
-						pintarCaminoCeldas(caminoMasCorto);
-						
+
+						panelInputsTam.setBorder(BorderFactory
+								.createTitledBorder(stringTamañoTiempoTablero
+										.concat(" - " + costeTiempo.getCosteTiempo()
+												+ " ms")));
+
+						pintarCaminoCeldas(caminoMasCorto, coord_Inicio,
+								coord_Inicio);
+
 					}
 				} catch (NumberFormatException e1) {
 					JOptionPane.showMessageDialog(null,
@@ -408,8 +403,8 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 					int altura = Integer.parseInt(textFieldAlturaTablero
 							.getText());
 
-					VentanaPrincipal.this.alturaTablero = altura;
-					VentanaPrincipal.this.anchuraTablero = anchura;
+					VentanaPrincipal.alturaTablero = altura;
+					VentanaPrincipal.anchuraTablero = anchura;
 				} catch (NumberFormatException e1) {
 					JOptionPane.showMessageDialog(null,
 							"Introduzca un número valido");
@@ -425,10 +420,11 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 		}
 	}
 
-	/** Key Listener común para lso elementos de la ventana
+	/**
+	 * Key Listener común para lso elementos de la ventana
 	 * 
 	 * @author Rodrigo de Miguel
-	 *
+	 * 
 	 */
 	public class KLElementosVentana implements KeyListener {
 
@@ -444,7 +440,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 				if (jButtonRedimensionar.isFocusOwner()) {
 					jButtonRedimensionar.doClick();
 				}
-				
+
 				if (jButtonReiniciar.isFocusOwner()) {
 					jButtonReiniciar.doClick();
 				}
@@ -464,11 +460,11 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 
 	}
 
-	
-	/** Focus Listener común para lso elementos de la ventana
+	/**
+	 * Focus Listener común para lso elementos de la ventana
 	 * 
 	 * @author Rodrigo de Miguel
-	 *
+	 * 
 	 */
 	public class FLElementosVentana implements FocusListener {
 
@@ -478,16 +474,12 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 
 		public void focusLost(FocusEvent arg0) {
 
-			
-
-
 			if (arg0.getSource() == textFieldIniY) {
 				try {
 
 					int xInicio = Integer.parseInt(textFieldIniX.getText());
 					int yInicio = Integer.parseInt(textFieldIniY.getText());
 
-					
 					if (xInicio > anchuraTablero - 1)
 						JOptionPane.showMessageDialog(null,
 								"Coor X Inicio fuera de rango");
@@ -496,7 +488,8 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 								"Coor Y Inicio fuera de rango");
 					else {
 
-						tableroCeldas.getCelda(xInicio, yInicio).setColorInicio();
+						tableroCeldas.getCelda(xInicio, yInicio)
+								.setColorInicio();
 
 					}
 				} catch (NumberFormatException e1) {
@@ -510,7 +503,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 
 					int xFinal = Integer.parseInt(textFieldFinX.getText());
 					int yFinal = Integer.parseInt(textFieldFinY.getText());
-					
+
 					if (xFinal > anchuraTablero - 1)
 						JOptionPane.showMessageDialog(null,
 								"Coor X Final fuera de rango");
@@ -529,4 +522,42 @@ public class VentanaPrincipal extends javax.swing.JFrame implements
 			}
 		}
 	}
+
+	public static void main(String[] args) {
+
+		try {
+			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
+					.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					javax.swing.UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (ClassNotFoundException ex) {
+			java.util.logging.Logger
+					.getLogger(VentanaPrincipal.class.getName()).log(
+							java.util.logging.Level.SEVERE, null, ex);
+		} catch (InstantiationException ex) {
+			java.util.logging.Logger
+					.getLogger(VentanaPrincipal.class.getName()).log(
+							java.util.logging.Level.SEVERE, null, ex);
+		} catch (IllegalAccessException ex) {
+			java.util.logging.Logger
+					.getLogger(VentanaPrincipal.class.getName()).log(
+							java.util.logging.Level.SEVERE, null, ex);
+		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+			java.util.logging.Logger
+					.getLogger(VentanaPrincipal.class.getName()).log(
+							java.util.logging.Level.SEVERE, null, ex);
+		}
+
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+
+				new VentanaPrincipal(anchuraTablero, alturaTablero).pintarse();
+			}
+		});
+
+	}
+
 }

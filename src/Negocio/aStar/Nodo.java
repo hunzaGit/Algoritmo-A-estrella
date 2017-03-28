@@ -24,7 +24,7 @@ public class Nodo implements Comparable<Nodo> {
         boolean isStart;
         boolean isGoal;
         
-        Nodo(int x, int y) {
+        public Nodo(int x, int y) {
                 neighborList = new ArrayList<Nodo>();
                 this.x = x;
                 this.y = y;
@@ -35,7 +35,7 @@ public class Nodo implements Comparable<Nodo> {
                 this.isGoal = false;
         }
         
-        Nodo (int x, int y, boolean visited, int distanceFromStart, boolean isObstical, boolean isStart, boolean isGoal) {
+        public Nodo (int x, int y, boolean visited, int distanceFromStart, boolean isObstical, boolean isStart, boolean isGoal) {
                 neighborList = new ArrayList<Nodo>();
                 this.x = x;
                 this.y = y;

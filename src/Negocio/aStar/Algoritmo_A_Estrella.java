@@ -3,6 +3,7 @@ package Negocio.aStar;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import Negocio.Coordenadas;
 import Negocio.heuristica.InterfazHeuristica;
 
 
@@ -22,12 +23,16 @@ public class Algoritmo_A_Estrella {
                 listaAbierta = new ListaNodosOrdenadas();
         }
 
-        public Camino calcularCaminoMasCorto(int startX, int startY, int goalX, int goalY) {
+        public Camino calcularCaminoMasCorto(Coordenadas coord_Inicio, Coordenadas coord_Fin, int[][] obstacleMap ) {
+        	
+                map.setLocalizacionInicial(coord_Inicio.getCoord_x(), coord_Inicio.getCoord_Y());
+                map.setLocalizacionDeLaMeta(coord_Fin.getCoord_x(), coord_Fin.getCoord_Y());
+                map.setMapaDeObstaculos(obstacleMap);
+               
+                listaCerrada = new ArrayList<Nodo>();
+                listaAbierta = new ListaNodosOrdenadas();
 
-                map.setLocalizacionInicial(startX, startY);
-                map.setLocalizacionDeLaMeta(goalX, goalY);
-
-                if (map.getNodo(goalX, goalY).isObstacle()) {
+                if (map.getNodo(coord_Fin.getCoord_x(), coord_Fin.getCoord_Y()).isObstacle()) {
                         return null;
                 }
 
@@ -79,11 +84,10 @@ public class Algoritmo_A_Estrella {
 
                 }
                 return null;
-        }
-
+}
         
         
-        public void PintarCamino() {
+        public void pintarCamino() {
                 Nodo nodo;
                 for(int x=0; x<map.getAnchuraMapaLogico(); x++) {
 

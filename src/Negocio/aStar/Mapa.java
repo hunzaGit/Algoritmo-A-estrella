@@ -13,14 +13,16 @@ public class Mapa {
         private int localizacionFinalY = 0;
         private int[][] mapaDeObstaculos;
         
-        public Mapa(int ancho, int alto, int[][] obstacleMap) {
+        public Mapa(int ancho, int alto/*, int[][] obstacleMap*/) {
                 this.anchuraMapa = ancho;
                 this.alturaMapa = alto;
-                this.mapaDeObstaculos = obstacleMap;
+                //this.mapaDeObstaculos = obstacleMap;
+                this.mapaDeObstaculos = new int[anchuraMapa + 1][alturaMapa + 1];
                 
                 crearMapa();
                 establecerBordesMapa();
         }
+        
         private void crearMapa() {
                 Nodo node;
                 mapa = new ArrayList<ArrayList<Nodo>>();
@@ -137,4 +139,15 @@ public class Mapa {
                 crearMapa();
                 establecerBordesMapa ();
         }
+		/**
+		 * @param mapaDeObstaculos the mapaDeObstaculos to set
+		 */
+		public void setMapaDeObstaculos(int[][] mapaDeObstaculos) {
+			this.mapaDeObstaculos = mapaDeObstaculos;
+			crearMapa();
+            establecerBordesMapa();
+		}
+     
+		
+		
 }
